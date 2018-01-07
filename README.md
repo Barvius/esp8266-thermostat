@@ -1,1 +1,1 @@
-# esp8266-thermostat
+# esp8266
