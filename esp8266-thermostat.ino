@@ -120,10 +120,13 @@ void setup() {
 
 unsigned long timer = 0;
 unsigned long intervalHeating = 0;
+unsigned long intervalHistory = 0;
 
 void refreshData() {
-
-
+  if (millis() - intervalHistory > 300000) {
+    history();
+    intervalHistory = millis();
+  }
   if (millis() - intervalHeating > 10000) {
     sensors.requestTemperatures();
     float SystemTemperature = sensors.getTempC(Thermostat_DEV);

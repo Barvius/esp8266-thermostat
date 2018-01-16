@@ -1,4 +1,6 @@
 void server_init(void) {
+  server.on("/raw",raw);
+  server.on("/history", history_handler);
   server.on("/restart", restart);
   server.on("/system_info", system_info_handler);
   server.on("/available_networks", available_networks_handler);
