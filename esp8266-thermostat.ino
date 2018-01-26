@@ -122,8 +122,8 @@ unsigned long timer = 0;
 unsigned long intervalHeating = 0;
 unsigned long intervalHistory = 0;
 
-void refreshData() {
-  if (millis() - intervalHistory > 300000) {
+void heating(){
+   if (millis() - intervalHistory > 300000) {
     history();
     intervalHistory = millis();
   }
@@ -152,6 +152,10 @@ void refreshData() {
     intervalHeating = millis();
   }
 
+}
+
+void refreshData() {
+ 
 
   if (millis() - timer > 30000) {
     DeviceAddress tempDeviceAddress;
@@ -220,6 +224,7 @@ void callback(const MQTT::Publish& pub)
 void loop() {
   server.handleClient();
   delay(1);
+  heating();
   if (client.connected()) {
     client.loop();
     refreshData();
