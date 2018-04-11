@@ -119,44 +119,18 @@ void setup() {
 
 
 unsigned long timer = 0;
-unsigned long intervalHeating = 0;
+
 unsigned long intervalHistory = 0;
+
 
 void heating(){
    if (millis() - intervalHistory > 300000) {
     history();
     intervalHistory = millis();
   }
-  if (millis() - intervalHeating > 10000) {
-    sensors.requestTemperatures();
-    float SystemTemperature = sensors.getTempC(Thermostat_DEV);
-    if (Thermostat_EN) { // auto
-
-      client.publish("Home/HS/temperature", String(SystemTemperature));
-      if (SystemTemperature > Thermostat_MAX && digitalRead(THERMOSTAT_PIN)) {
-        digitalWrite(THERMOSTAT_PIN, LOW);
-        client.publish("Home/HS/pump", "1");
-      }
-      if (SystemTemperature < Thermostat_MIN && !digitalRead(THERMOSTAT_PIN)) {
-        digitalWrite(THERMOSTAT_PIN, HIGH);
-        client.publish("Home/HS/pump", "0");
-      }
-    }
-    // alarm beep
-    if (Thermostat_Alarm_EN && SystemTemperature > Thermostat_Alarm_MAX) {
-      tone(THERMOSTAT_ALARM_PIN, 2750, 500);
-    } else {
-      noTone(THERMOSTAT_ALARM_PIN);
-    }
-
-    intervalHeating = millis();
-  }
-
 }
 
 void refreshData() {
- 
-
   if (millis() - timer > 30000) {
     DeviceAddress tempDeviceAddress;
     int deviceCount = sensors.getDeviceCount();  // узнаем количество подключенных градусников
@@ -225,6 +199,7 @@ void loop() {
   server.handleClient();
   delay(1);
   heating();
+  ThermostatLoop();
   if (client.connected()) {
     client.loop();
     refreshData();

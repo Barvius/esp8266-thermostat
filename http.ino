@@ -7,6 +7,7 @@ void server_init(void) {
  server.on("/io", gpio_handler);
  server.on("/mqtt", config_mqtt_handler);
   update();
+  ThermostatServer();
   server.begin();
 }
 
