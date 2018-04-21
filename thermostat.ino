@@ -93,7 +93,7 @@ void ThermostatLoop() {
     float SystemTemperature = sensors.getTempC(Thermostat_DEV);
     if (Thermostat_EN) { // auto
 
-      client.publish("Home/HS/temperature", String(SystemTemperature));
+//      client.publish("Home/HS/temperature", String(SystemTemperature));
       if (SystemTemperature > Thermostat_MAX && digitalRead(THERMOSTAT_PIN)) {
         digitalWrite(THERMOSTAT_PIN, LOW);
         //client.publish("Home/HS/pump", "1");
